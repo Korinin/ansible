@@ -1,0 +1,18 @@
+---
+- name: Ensure httpd Service Running and Enabled
+  service: name=httpd state=started enabled=yes
+  become: yes
+  tags:
+    - sanity
+    - installation
+
+- name: Cp vhost conf
+  template:
+    src: "/home/student/repositories/Ansible/day2/roles/httpd/templates/vhost.conf.j2"
+    dest: "/etc/httpd/conf.d/vhost.conf"
+  notify: Restart service httpd
+  become: yes
+
+
+
+# tasks file for httpd

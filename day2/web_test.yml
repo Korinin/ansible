@@ -1,0 +1,8 @@
+---
+- name: Deploy apps
+  hosts: webserver
+
+  roles:
+    #  - common
+   # - devops_user
+   - httpd

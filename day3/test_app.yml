@@ -1,0 +1,9 @@
+---
+- name: Deploy apps
+  hosts: appserver
+
+  roles:
+  - common
+ # - tomcat
+#   - java
+

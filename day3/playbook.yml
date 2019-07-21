@@ -1,0 +1,43 @@
+#
+---
+- name: Input host users on screen
+  hosts: all
+  pre_tasks:
+    - shell: whoami
+      register: sh
+    - debug:
+        var: sh.stdout_lines
+
+
+- name: Deploy apps and create users for operate
+  hosts: nodes
+  roles:
+    - common
+    - user
+
+- name: Deploy httpd
+  hosts: webserver
+  roles:
+    - role: httpd
+      vars:
+        my_variable: new_value
+  tags:
+    - httpd
+
+- name: Deploy Java and Tomcat to Appservers
+  hosts: appserver
+  roles:
+    - { role: java, jdk_version: 11.0.3 }
+    - { role: tomcat, tomcat_release: 8.5.43 }
+  tags:
+    - java_tomcat
+    - jt
+
+- name: Sanity test for Tomcat
+  hosts: all
+  post_tasks:
+    - shell: curl -s {{ server_url }} | grep 'tomcat' >/dev/null
+      args:
+        warn: false
+  tags:
+    - sanity

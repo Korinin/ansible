@@ -1,0 +1,12 @@
+---
+- name: Deploy apps
+  hosts: appserver
+
+  roles:
+    - { role: java, jdk_release: 1.8.0 }
+    - { role: tomcat, tomcat_release: 8.5.43 }
+
+#  - common
+#  - tomcat
+#  - java
+

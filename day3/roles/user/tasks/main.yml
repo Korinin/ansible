@@ -1,0 +1,35 @@
+---
+- name: Add USER Group
+  group:
+    name: "{{ group }}"
+    gid: "{{ group_id }}"
+    state: present
+  become: yes
+
+- name: Add User
+  user:
+    name: "{{ user }}"
+    comment: "devops Web Application Server"
+    uid: "{{ user_id }}"
+    group: "{{ group }}"
+    groups: "{{groups_s}}"
+    home:
+    create_home: yes
+  become: yes
+
+- name: Set up multiple authorized keys
+  authorized_key:
+    user: "{{ user }}"
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - devops.pem
+    - student.pem
+  become: yes
+
+
+- name: Grant ALL permissions with ability to run commands without password prompt to user
+  shell: echo ""{{ user }}" ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/"{{ user }}"
+  become: yes
+
+

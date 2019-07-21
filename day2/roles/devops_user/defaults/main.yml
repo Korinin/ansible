@@ -1,0 +1,9 @@
+---
+user: devops
+group: "{{user}}"
+user_id: 1042
+group_id: 1042
+admin_enabled: true
+admin: admin
+#admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+# defaults file for user

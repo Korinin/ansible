@@ -1,0 +1,32 @@
+---
+- name: Add USER Group
+  group:
+    name: "{{ group }}"
+    gid: "{{ group_id }}"
+    state: present
+  become: yes
+
+- name: Add User
+  user:
+    name: "{{ user }}"
+    comment: "devops Web Application Server"
+    uid: "{{ user_id }}"
+    group: "{{ group }}"
+  become: yes
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: devops
+    state: present
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCkwmg1sbR30Qdiasy3IsgkxYzigpUGECS5489OEt6r5CWDJwhbhyRSSa5gwOID9q+pWx+sqXIP70pmp9QQ1bMTuZrdyJf/MV/ASl2ZBvcEDDzDrm/1Dgayy5m2YJjZju7+DwFKx1lFYGUm6dwnJVVxbwQqHiloYHHCkl3NCpcBBikMeJ5BOm86KvUkkjrIJ0EwPJ86w/zFXq7yTuAqZkgTXCcMwOHgwCWxCkuOGRzmuXhULlgWwcw+ZazobQDmi+j0yO6wYgRW6isB+04XIRDPMV8KEswI6fDYYTsSd6T0nMqNlUo3XsmgJIuBB2QuU5FM8nP5TvJQ05Aoa43TFL7n student@EPBYMINW6852.minsk.epam.com
+  become: yes
+
+
+- name: Grant ALL permissions with ability to run commands without password prompt to devops
+  shell: echo "devops ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/devops
+  become: yes
+
+
+
+
+# tasks file for user

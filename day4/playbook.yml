@@ -1,0 +1,18 @@
+#
+---
+- import_playbook: base.yml
+- import_playbook: user.yml
+#  vars:
+#  my_variable: my_value
+#    - import_playbook: databases.yml
+#  when: something|bool
+
+- import_playbook: httpd.yml
+#    when: something|bool
+
+
+- import_playbook: java.yml
+- import_playbook: tomcat.yml
+- import_playbook: sanity.yml
+
+

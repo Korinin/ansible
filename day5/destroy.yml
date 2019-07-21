@@ -1,0 +1,13 @@
+- hosts: localhost
+
+  tasks:
+
+
+  - name: Destroy Docker Container
+    docker_container:
+      name: "{{ hostvars[item].ansible_host[1:]}}"
+      state: absent
+      privileged: true
+    loop: "{{ groups['appserver'] + groups['webserver'] }}"
+    tags:
+      - destroy

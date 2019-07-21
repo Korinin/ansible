@@ -1,0 +1,58 @@
+---
+  - name: Role validates that installed java is the same as it should be by configuration
+    shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'| grep {{jdk_version}}
+    args:
+      warn: false
+    register: result_java_installed
+
+
+  - name: Create java Folder
+    file:
+      path: "{{ java_dest }}"
+      state: directory
+      mode: 0755
+    become: yes
+    when: result_java_installed|failed
+
+  - name: Unarchive java from source
+    unarchive:
+      src: "jdk-{{jdk_version}}_linux-x64_bin.tar.gz"
+      dest: "{{ java_dest }}"
+    become: yes
+    register: result
+    ignore_errors: true
+    when: result_java_installed|failed
+  - debug:
+      msg: "java version distribution hasn’t been found"
+    when: result|failed
+
+
+  - name: Java | Update alternatives
+    alternatives:
+      name: "{{ item }}"
+      link: /usr/bin/{{ item }}
+      path: "{{ java_dest }}/jdk-{{jdk_version}}/bin/{{ item }}"
+    with_items:
+      - "java"
+      - "javac"
+      - "jar"
+    tags:
+      java_alt
+    become: yes
+    when: result_java_installed|failed
+
+  - name: Role validates that installed java is the same as it should be by configuration
+    shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'| grep {{jdk_version}}
+    args:
+        warn: false
+    register: result_java_installed
+
+
+  - name: Java | Set JAVA_HOME fact
+    set_fact:
+      java_installed: "{{jdk_version}}"
+    when: result_java_installed
+
+#  - name: Java | Set JAVA_HOME fact
+#    set_fact:
+#      java_home: "{{ java_oracle_jdk_install_path }}"

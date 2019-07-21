@@ -1,0 +1,32 @@
+- hosts: nodes
+
+  tasks:
+    - name: create group devops
+      group:
+        name: devops
+        state: present
+      become: yes
+
+
+
+    - name: create user devops
+      user:
+        name: devops
+        comment: Kirill Shevchenko
+        uid: 1042
+        group: devops
+      become: yes
+
+
+    - name: Set authorized key taken from file
+      authorized_key:
+        user: devops
+        state: present
+        key: "{{ lookup('file', 'devops.pem') }}"
+      become: yes
+
+
+    - name: Grant ALL permissions with ability to run commands without password prompt to devops
+      shell: echo "devops ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/devops
+      become: yes
+

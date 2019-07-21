@@ -1,0 +1,5 @@
+*.pyc
+*.retry
+.vagrant
+.sonar
+*.gz

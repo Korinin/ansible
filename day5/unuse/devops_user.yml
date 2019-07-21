@@ -1,0 +1,10 @@
+---
+- name: Create user
+  hosts:
+    - appserver
+    - webserver
+
+  roles:
+    - devops_user
+  tags:
+    - user addition

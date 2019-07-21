@@ -1,0 +1,10 @@
+---
+- name: Deploy apps and create users for operate
+  hosts:
+    - appserver
+    - webserver
+
+  roles:
+    - base
+  tags:
+    - installiation necessary apps

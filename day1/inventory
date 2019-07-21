@@ -1,0 +1,27 @@
+[localhost]
+127.0.0.1
+
+[localhost:vars]
+server_url = 192.168.200.200
+ansible_connection=local
+
+[nodes:children]
+webserver
+appserver
+
+[nodes:vars]
+ansible_user = devops
+ansible_private_key_file=devops.pem
+jdk_release=1.7.0
+
+[webserver]
+192.168.200.200
+[webserver:vars]
+server_url = localhost
+
+
+[appserver]
+192.168.200.210
+
+[appserver:vars]
+server_url = localhost:8080

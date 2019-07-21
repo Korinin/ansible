@@ -1,0 +1,32 @@
+---
+  - name: Create java Folder
+    file:
+      path: "{{ java_dest }}"
+      state: directory
+      mode: 0755
+    become: yes
+
+  - name: Unarchive java from source
+    unarchive:
+      src: "jdk-{{jdk_version}}_linux-x64_bin.tar.gz"
+      dest: "{{ java_dest }}"
+    become: yes
+    register: result
+    ignore_errors: true
+
+  - debug:
+      msg: "java version distribution hasn’t been found"
+    when: result is failed
+
+
+  - name: Correct java version selected
+    alternatives:
+      name: java
+      path: "{{ java_dest }}/jdk-{{jdk_version}}/bin/java"
+      link: /bin/java
+    become: yes
+    tags:
+      - sanity
+
+
+

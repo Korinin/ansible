@@ -1,0 +1,36 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "sbeliakou/centos"
+
+ #create a nod name webserver
+ config.vm.define "webserver" do |webserver|
+   webserver.vm.box = "sbeliakou/centos"
+   webserver.vm.network :private_network, ip: "192.168.200.200"
+   webserver.vm.provider "virtualbox" do |vb|
+     vb.memory = 1024
+     vb.name = "webserver"
+   end 
+   webserver.vm.provision "shell", inline: <<-SHELL
+        yum install -y epel-release
+        yum install -y python-pip
+        yum install -y psmisc
+        yum install -y net-tools
+       SHELL
+
+end
+
+#create a nod name appserver
+ config.vm.define "appserver" do |appserver|
+   appserver.vm.box = "sbeliakou/centos"
+   appserver.vm.network :private_network, ip: "192.168.200.210"
+   appserver.vm.provider "virtualbox" do |vb|
+     vb.memory = 1024
+     vb.name = "appserver"
+   end
+   appserver.vm.provision "shell", inline: <<-SHELL
+        yum install -y epel-release
+        yum install -y python-pip
+        yum install -y psmisc
+        yum install -y net-tools
+       SHELL
+end
+end

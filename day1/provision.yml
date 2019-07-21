@@ -1,0 +1,62 @@
+---
+- name: Deploy Nginx
+  hosts: webserver
+  user: devops
+
+  tasks:
+
+    - name: Ensure Nginx Latest Release Installed
+      yum: name=nginx state=latest
+
+    - name: Ensure Nginx Service Running and Enabled
+      service: name=nginx state=started enabled=yes
+
+    - name: Copy configuration file
+      copy:
+        src: conf/nginx.conf
+        dest: /etc/nginx/nginx.conf
+      become: yes
+
+
+- name: Deploy Tomcat
+  hosts: appserver
+  user: devops
+
+  tasks:
+    - name: Ensure OpenJDK Installed
+      yum: name=java-{{ jdk_release }}-openjdk
+
+    - name: Check Java Version
+      shell: java -version 2>&1 | grep "{{ jdk_release }}"
+
+    - name: Ensure Tomcat Installed
+      yum: name=tomcat
+
+    - name: Ensure Tomcat Webapps Package Installed
+      yum: name=tomcat-webapps
+
+    - name: Ensure Tomcat Service Running and Enabled
+      service: name=tomcat state=started enabled=yes
+
+    - name: deploy sample tomcat app
+      uri:
+        url: https://tomcat.apache.org/tomcat-7.0-doc/appdev/sample/sample.war
+        method: POST
+        dest: /usr/share/tomcat/webapps/sample.war
+      become: yes
+
+
+- name: Tomcat Checks
+  hosts: all
+
+  tasks:
+
+    - name: Check - tomcat works on all servers
+      shell: curl -s {{ server_url }} | grep 'Apache Tomcat' >/dev/null
+      args:
+        warn: false
+
+    - name: Check - tomcat app works on all servers
+      shell: curl -s {{ server_url }}/sample/ | grep 'Sample' >/dev/null
+      args:
+        warn: false

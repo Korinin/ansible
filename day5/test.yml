@@ -1,0 +1,19 @@
+- hosts: localhost
+
+  tasks:
+
+- import_playbook: create.yml
+  tags:
+    - sanity
+- import_playbook: provision.yml
+  tags:
+    - provision
+- import_playbook: sanity.yml
+  tags:
+    - sanity
+- import_playbook: destroy.yml
+
+
+
+
+

@@ -1,0 +1,9 @@
+---
+- name: Deploy httpd
+  hosts: webserver
+
+  roles:
+   - httpd
+  tags:
+    - httpd installation and configuration
+

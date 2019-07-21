@@ -1,0 +1,24 @@
+---
+- name: Role validates that installed java is the same as it should be by configuration
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'| grep {{jdk_version}}
+  args:
+    warn: false
+  tags:
+    - sanity
+
+- name: Get httpd Version
+  shell: /usr/sbin/httpd -v 2>&1 | awk -F'/' '{print $2}'
+  register: httpd_version
+  args:
+    warn: false
+  tags:
+    - sanity
+
+- name: Check port 80 and fail otherwise
+  wait_for:
+    port: 80
+    connect_timeout: 1
+    timeout: 5
+  tags:
+    - sanity
+# tasks file for sanity

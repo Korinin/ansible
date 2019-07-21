@@ -1,0 +1,18 @@
+---
+user: devops4
+group: "{{user}}"
+user_id: 1045
+group_id: "{{user_id}}"
+
+
+groups_s:
+  - root
+  - users
+  - adm
+
+
+
+admin_enabled: true
+admin: admin
+#admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+# defaults file for user

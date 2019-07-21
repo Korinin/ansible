@@ -1,0 +1,47 @@
+---
+#
+#- name: Ensure OpenJDK Installed
+#  yum:
+#    name: name=java-{{ jdk_release }}-openjdk
+##    state: latest
+#  become: yes
+#
+- name: Ensure OpenJDK Installed
+  yum: name=java-{{ jdk_release }}-openjdk
+  become: yes
+  notify:
+    - save java details
+
+- name: Java Version
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'
+  register: java_version
+
+- name: Java Build
+  shell: java -version 2>&1 | grep "Server VM .build"
+  register: java_build
+
+- name: Ensure Facts Directory Exists
+  file:
+    path: /etc/ansible/facts.d
+    recurse: yes
+    state: directory
+  become: yes
+
+- name: Display variable from executable script
+  debug:
+   msg: "java = {{ ansible_local.exec_java.java_version }}"
+
+- name: Get my public IP
+  ipify_facts:
+- debug: var=hostvars[inventory_hostname]['ipify_public_ip']
+- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+
+
+
+- name: template
+  template:
+    src: debug.j2
+    dest: /tmp/debug.ansible
+
+
+

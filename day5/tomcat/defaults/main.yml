@@ -1,0 +1,11 @@
+---
+tomcat_release: "8.5.43"
+tomcat_user: tomcat
+tomcat_group: tomcat
+tomcat_user_id: 950
+tomcat_group_id: 950
+tomcat_home: /opt/apache/tomcat
+tomcat_url: http://ftp.byfly.by/pub/apache.org/tomcat/tomcat-8/v8.5.43/bin/apache-tomcat-8.5.43.tar.gz
+tomcat_admin_enabled: false
+tomcat_admin: admin
+tomcat_admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"

@@ -1,0 +1,7 @@
+---
+- name: Sanity tests
+
+  roles:
+    - sanity
+  tags:
+    - sanity

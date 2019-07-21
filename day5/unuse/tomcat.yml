@@ -1,0 +1,10 @@
+---
+- name: Deploy tomcat
+  hosts: appserver
+
+  roles:
+  - tomcat
+  tags:
+    - tomcat installation and configuration
+
+

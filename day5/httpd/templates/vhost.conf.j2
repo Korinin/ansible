@@ -1,0 +1,13 @@
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+        ServerName {{ appserver_ip }}
+
+        ProxyRequests On
+        ProxyPass / http://{{ appserver_ip }}:8080/
+
+<Location "/">
+        Order allow,deny
+        Allow from all
+        </Location>
+        </VirtualHost>

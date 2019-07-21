@@ -1,0 +1,27 @@
+---
+- name: Deploy base apps
+  hosts:
+    - appserver
+    - webserver
+  roles:
+    - base
+
+  tags:
+    - installiation necessary apps
+
+- name: Deploy httpd
+  hosts: webserver
+
+  roles:
+    - httpd
+  tags:
+    - httpd installation and configuration
+
+- name: Deploy java and tomcat
+  hosts: appserver
+
+  roles:
+    - java
+    - tomcat
+  tags:
+    - java installation

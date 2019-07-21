@@ -1,0 +1,8 @@
+---
+- name: Create user
+  hosts: nodes
+
+  roles:
+    - user
+  tags:
+    - user addition
